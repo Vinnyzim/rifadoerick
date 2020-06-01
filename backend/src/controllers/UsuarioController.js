@@ -2,35 +2,50 @@ const connection = require('../database/connection')
 
 module.exports = {
 
-    //Criar Usuarios
-    async criarUsuario (request, response)  {
-        const {nome, email, telefone, logradouro, complemento, localidade, uf, descricao_conhece_mamae_papai, msg_erick} = request.body;
+    
+    //Verifica se já existe email cadastrado
+
+    async verificaEmail (request, response){
+
+        const {email} = request.body;
 
         const verificaEmail = await connection('usuario').select('email').where('email', email);
 
         let lenEmail = verificaEmail.length;
-    
+
         if (lenEmail > 1 ) {
 
-            return response.json({Mensagem: "Email já está sendo usado!"});
+            return response.status(400).json({Mensagem: "Email já está sendo usado!"});
             
         } 
-        else {
-        await connection('usuario').insert({
-            nome,
-            email,
-            telefone,
-            logradouro,
-            complemento,
-            localidade,
-            uf,
-            descricao_conhece_mamae_papai,
-            msg_erick,
-        })
-    
-        return response.json({Mensagem:"Cadastro Concluido com sucesso"});
-    }
+
+        return response.send();
+
     },
+
+    //Criar Usuarios
+    async criarUsuario (request, response)  {
+        const {nome, email, telefone, logradouro, complemento, localidade, uf, descricao_conhece_mamae_papai, msg_erick} = request.body;
+        
+        
+            await connection('usuario').insert({
+                nome,
+                email,
+                telefone,
+                logradouro,
+                complemento,
+                localidade,
+                uf,
+                descricao_conhece_mamae_papai,
+                msg_erick,
+            })
+        
+            return response.json({Mensagem:"Cadastro Concluido com sucesso"});
+
+        },
+
+    
+    
 
     //Listar Usuarios
     async listarUsuarios(request, response)  {
