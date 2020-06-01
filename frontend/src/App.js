@@ -1,12 +1,10 @@
 import React from 'react';
-import FormDialog from './pages/telaInicial'
-import './App.css';
+
+import Routes from './router';
 
 function App() {
   return (
-    <div className="App">
-      <FormDialog/>
-    </div>
+    <Routes />
   );
 }
 
